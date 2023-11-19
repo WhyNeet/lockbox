@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Geist Sans";
+  src: url('./assets/GeistVariableVF.ttf');
+}
+
+
+
+@layer base {
+  .window-frame {
+    @apply h-[calc(100vh-1px)] w-[calc(100vw-1px)] border border-neutral-700 bg-neutral-850 text-white select-none overflow-hidden transition-[border-radius] duration-150
+  }
+
+  .drag-none {
+    -webkit-user-drag: none;
+  }
+
+  * {
+    @apply outline-none
+  }
+
+  *:focus {
+    @apply ring-4 ring-blue-500/30 transition-all
+  }
+
+  input::-ms-reveal,input::-ms-clear {
+    display: none;
+  }
+}
+
+
+
+
+@font-face {
+  font-family: 'Material Symbols Rounded';
+  font-style: normal;
+  font-weight: 100 700;
+  src: url('./assets/material_symbols_rounded.woff2') format('woff2');
+}
+
+.icon {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
