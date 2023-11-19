@@ -7,16 +7,27 @@ import { rootLoader } from "./loaders/root";
 import CreateVault from "@/routes/CreateVault";
 import UnlockVault from "@/routes/UnlockVault";
 import EntryLayout from "@/components/EntryLayout";
+import ErrorBoundary from "@/routes/ErrorBoundary";
+import PasswordView from "@/routes/PasswordView";
 
 export const router = createBrowserRouter([
+  {
+    ErrorBoundary: ErrorBoundary,
+  },
   {
     path: "",
     Component: App,
     loader: rootLoader,
     children: [
       {
-        path: "/",
+        path: "/all",
         Component: AllItems,
+        children: [
+          {
+            path: ":id",
+            Component: PasswordView,
+          },
+        ],
       },
       {
         path: "/favorites",

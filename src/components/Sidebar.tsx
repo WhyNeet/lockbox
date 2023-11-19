@@ -19,7 +19,7 @@ export type SidebarItemAttrs = {
 
 const sidebarItems: SidebarItemAttrs[] = [
   {
-    to: "/",
+    to: "/all",
     Icon: "shield",
     text: "All Items",
     iconDefaultColor: "text-blue-500 fill-blue-500",

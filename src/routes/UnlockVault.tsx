@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api";
 import { Unlock } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 export default function UnlockVault() {
   const navigate = useNavigate();
@@ -23,12 +24,16 @@ export default function UnlockVault() {
       })
       .catch((e) => {
         console.log(e);
+        toast.error("Wrong password.");
         setIsHashing(false);
       });
   };
 
   return isHashing ? (
-    <ActivityIndicator />
+    <>
+      <ActivityIndicator className="mb-2" />
+      <Typography type="subheadline">Unlocking...</Typography>
+    </>
   ) : (
     <div className="w-80">
       <Typography type="largeTitle">Welcome back!</Typography>

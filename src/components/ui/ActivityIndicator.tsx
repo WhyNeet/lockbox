@@ -1,6 +1,7 @@
 import { cn } from "@/lib/classMerge";
 import { Asterisk } from "lucide-react";
 import { HTMLAttributes, forwardRef } from "react";
+import { motion } from "framer-motion";
 
 export interface ActivityIndicatorProps
   extends HTMLAttributes<HTMLDivElement> {}
@@ -19,13 +20,20 @@ export const ActivityIndicator = forwardRef<
       {...props}
     >
       {[1, 2, 3].map((idx) => (
-        <div
+        <motion.div
           key={idx}
-          className="animate-star-bounce flex items-center justify-center"
-          style={{ animationDelay: idx * 500 + "ms" }}
+          initial={{ opacity: 0, scale: 0.4 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, delay: idx * 0.2 }}
+          className={`animate-star-bounce flex items-center justify-center ${
+            idx % 2 ? "" : "text-blue-400"
+          }`}
+          style={{
+            animationDelay: idx * 500 + "ms",
+          }}
         >
           <Asterisk className="animate-spin h-12 w-12" />
-        </div>
+        </motion.div>
       ))}
     </div>
   );

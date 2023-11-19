@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: '"Geist Sans", sans-serif',
+        sans: '"Inter Variable", sans-serif',
       },
       colors: {
         "neutral-850": "rgba(28, 28, 28, var(--tw-bg-opacity, 1))",

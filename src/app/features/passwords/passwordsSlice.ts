@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Password } from "./password";
+import { Metadata, Password } from "./password";
 import { invoke } from "@tauri-apps/api";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
@@ -20,7 +20,14 @@ export const getPasswords = createAsyncThunk<
   { rejectValue: string }
 >("passwords/getPasswords", async (_, { rejectWithValue }) => {
   try {
-    const passwords: Password[] = await invoke("get_all_passwords");
+    const passwordsRes: Record<string, string>[] = await invoke(
+      "get_all_passwords"
+    );
+    const passwords: Password[] = passwordsRes.map((pass) => ({
+      id: pass["id"],
+      password: pass["password"],
+      metadata: JSON.parse(pass.metadata as unknown as string) as Metadata,
+    }));
     console.log(passwords);
     return passwords;
   } catch (e: any) {

@@ -2,13 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Geist Sans";
-  src: url('./assets/GeistVariableVF.ttf');
-}
-
-
-
 @layer base {
   .window-frame {
     @apply h-[calc(100vh-1px)] w-[calc(100vw-1px)] border border-neutral-700 bg-neutral-850 text-white select-none overflow-hidden transition-[border-radius] duration-150
@@ -28,6 +21,10 @@
 
   input::-ms-reveal,input::-ms-clear {
     display: none;
+  }
+
+  .toast {
+    @apply text-white rounded-lg text-sm border border-neutral-800 p-1.5 min-w-[280px] flex flex-col items-start
   }
 }
 

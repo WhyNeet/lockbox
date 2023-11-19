@@ -1,6 +1,6 @@
 import { cn } from "@/lib/classMerge";
 import { HTMLAttributes } from "react";
-import { Maximize, Maximize2, Minus, Square, X } from "lucide-react";
+import { Minus, Square, X } from "lucide-react";
 
 export default function TrafficLights({
   className,
