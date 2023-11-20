@@ -46,7 +46,7 @@ export default function CreateVault() {
           onChange={(e) => setMaster(e.target.value)}
           value={master}
           placeholder="Vault password"
-          className="w-full text-xl tracking-widest placeholder:text-[15px] placeholder:tracking-normal h-8"
+          className="w-full tracking-widest placeholder:text-[15px] placeholder:tracking-normal h-8"
           type="password"
           inputMode="text"
         />

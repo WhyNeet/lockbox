@@ -1,7 +1,6 @@
 use std::{path::PathBuf, sync::Mutex};
 
 use serde_json::Value;
-use uuid::Uuid;
 
 use crate::storage::{master::Master, model::metadata::Metadata, passwords::PasswordStorage};
 
@@ -22,7 +21,11 @@ impl Storage {
         })
     }
 
-    pub fn create_password(&self, password: String, metadata: Metadata) -> anyhow::Result<Uuid> {
+    pub fn create_password(
+        &self,
+        password: String,
+        metadata: Metadata,
+    ) -> anyhow::Result<serde_json::Value> {
         let key = self
             .master
             .lock()
@@ -36,7 +39,7 @@ impl Storage {
             self.password_storage
                 .create_password(password, metadata, key.as_ref().unwrap())?;
 
-        Ok(password)
+        password.decrypt(key.as_ref().unwrap())
     }
 
     pub fn get_all_passwords(&self) -> anyhow::Result<Vec<Value>> {

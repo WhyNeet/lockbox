@@ -9,6 +9,7 @@ import UnlockVault from "@/routes/UnlockVault";
 import EntryLayout from "@/components/EntryLayout";
 import ErrorBoundary from "@/routes/ErrorBoundary";
 import PasswordView from "@/routes/PasswordView";
+import CreatePassword from "@/routes/CreatePassword";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
         path: "/all",
         Component: AllItems,
         children: [
+          {
+            path: "new",
+            Component: CreatePassword,
+          },
           {
             path: ":id",
             Component: PasswordView,

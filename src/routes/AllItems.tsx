@@ -1,7 +1,5 @@
-import {
-  getPasswords,
-  usePasswords,
-} from "@/app/features/passwords/passwordsSlice";
+import { getPasswords } from "@/app/features/passwords/password";
+import { usePasswords } from "@/app/features/passwords/passwordsSlice";
 import { AppDispatch } from "@/app/store";
 import ItemsBar from "@/components/ItemsBar";
 import { useEffect } from "react";

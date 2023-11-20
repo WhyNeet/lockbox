@@ -4,7 +4,6 @@
 use lockbox::{state::storage::Storage, storage::model::metadata::Metadata};
 use serde_json::Value;
 use tauri::Manager;
-use uuid::Uuid;
 
 fn main() {
     tauri::Builder::default()
@@ -64,7 +63,7 @@ async fn create_password(
     storage: tauri::State<'_, Storage>,
     password: String,
     metadata: Metadata,
-) -> Result<Uuid, String> {
+) -> Result<serde_json::Value, String> {
     let password = storage
         .create_password(password, metadata)
         .map_err(|err| err.to_string())?;

@@ -4,7 +4,7 @@ use anyhow::Context;
 
 use crate::crypto::{encryption, nonce};
 
-#[derive(serde::Serialize, serde::Deserialize)]
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
 pub struct EncryptedEntry {
     hash: Vec<u8>,
     nonce: Vec<u8>,

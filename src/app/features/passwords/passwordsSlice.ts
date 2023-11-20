@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Metadata, Password } from "./password";
-import { invoke } from "@tauri-apps/api";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { Password, createPassword, getPasswords } from "./password";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 
@@ -14,28 +13,6 @@ const initialState: PasswordsState = {
   error: null,
 };
 
-export const getPasswords = createAsyncThunk<
-  Password[],
-  void,
-  { rejectValue: string }
->("passwords/getPasswords", async (_, { rejectWithValue }) => {
-  try {
-    const passwordsRes: Record<string, string>[] = await invoke(
-      "get_all_passwords"
-    );
-    const passwords: Password[] = passwordsRes.map((pass) => ({
-      id: pass["id"],
-      password: pass["password"],
-      metadata: JSON.parse(pass.metadata as unknown as string) as Metadata,
-    }));
-    console.log(passwords);
-    return passwords;
-  } catch (e: any) {
-    console.log(e);
-    return rejectWithValue(e.message);
-  }
-});
-
 export const passwordsSlice = createSlice({
   name: "passwords",
   initialState,
@@ -47,10 +24,26 @@ export const passwordsSlice = createSlice({
     builder.addCase(getPasswords.rejected, (state, { payload }) => {
       state.error = payload ?? null;
     });
+
+    builder.addCase(createPassword.fulfilled, (state, { payload }) => {
+      state.passwords.push(payload);
+    });
+    builder.addCase(createPassword.rejected, (state, { payload }) => {
+      state.error = payload ?? null;
+    });
   },
 });
 
+const selectPasswords = (state: RootState) => state.passwords.passwords;
+
 export const usePasswords = () =>
-  useSelector<RootState, Password[]>((state) => state.passwords.passwords);
+  useSelector<RootState, Password[]>(selectPasswords);
+export const usePassword = createSelector(
+  [selectPasswords, (_, id: string | null) => id],
+  (passwords, id) => {
+    console.log("run select password");
+    return id ? passwords.find((pass) => pass.id === id) : null;
+  }
+);
 export const {} = passwordsSlice.actions;
 export default passwordsSlice.reducer;

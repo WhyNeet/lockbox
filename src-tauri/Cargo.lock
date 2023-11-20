@@ -1608,6 +1608,7 @@ dependencies = [
  "anyhow",
  "argon2",
  "lazy_static",
+ "rand 0.8.5",
  "rusqlite",
  "serde",
  "serde_json",

@@ -3,7 +3,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, type InputHTMLAttributes } from "react";
 
 export const inputVariants = cva(
-  "rounded-lg px-2 py-1 focus:border-blue-500 border",
+  "rounded-lg px-2.5 py-1.5 focus:border-blue-500 border",
   {
     variants: {
       variant: {

@@ -5,7 +5,6 @@ use std::{
 
 use rusqlite::Connection;
 use serde_json::Value;
-use uuid::Uuid;
 
 use super::model::{metadata::Metadata, password::Password};
 
@@ -34,21 +33,18 @@ impl PasswordStorage {
         password: String,
         metadata: Metadata,
         key: &[u8],
-    ) -> anyhow::Result<Uuid> {
+    ) -> anyhow::Result<Password> {
         let conn = self.0.lock().unwrap();
 
         let password = Password::new(password.as_bytes(), metadata, key)
             .map_err(|err| anyhow::anyhow!(err.to_string()))?;
 
-        let password = password.into_params()?;
-        let password_id = password.0;
-
         conn.execute(
             r#"INSERT INTO passwords (id, password, metadata) VALUES ($1, $2, $3)"#,
-            password,
+            password.clone().into_params()?,
         )?;
 
-        Ok(password_id)
+        Ok(password)
     }
 
     pub fn get_all_passwords(&self, key: &[u8]) -> anyhow::Result<Vec<Value>> {

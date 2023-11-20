@@ -46,7 +46,7 @@ export default function UnlockVault() {
           onChange={(e) => setMaster(e.target.value)}
           value={master}
           placeholder="Vault password"
-          className="w-full text-xl tracking-widest placeholder:text-[15px] placeholder:tracking-normal h-9"
+          className="w-full tracking-widest placeholder:text-[15px] placeholder:tracking-normal h-9"
           type="password"
           variant="outline"
         />

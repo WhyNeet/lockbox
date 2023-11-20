@@ -4,12 +4,19 @@ use super::entry::EncryptedEntry;
 
 #[derive(Serialize, Deserialize)]
 #[serde(tag = "type")]
-pub enum Metadata {
+pub enum MetadataType {
     Empty,
     Login {
         account: String,
         website: Option<String>,
     },
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Metadata {
+    #[serde(flatten)]
+    metadata: MetadataType,
+    is_starred: u8,
 }
 
 impl Metadata {

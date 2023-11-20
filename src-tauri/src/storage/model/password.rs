@@ -6,6 +6,7 @@ use crate::storage::model::entry::DecryptedEntry;
 
 use super::{entry::EncryptedEntry, metadata::Metadata};
 
+#[derive(Clone)]
 pub struct Password {
     id: Uuid,
     password: EncryptedEntry,
