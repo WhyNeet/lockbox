@@ -1,5 +1,10 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { Password, createPassword, getPasswords } from "./password";
+import {
+  Password,
+  createPassword,
+  getPasswords,
+  updatePassword,
+} from "./password";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 
@@ -29,6 +34,17 @@ export const passwordsSlice = createSlice({
       state.passwords.push(payload);
     });
     builder.addCase(createPassword.rejected, (state, { payload }) => {
+      state.error = payload ?? null;
+    });
+
+    builder.addCase(updatePassword.fulfilled, (state, { payload }) => {
+      let passwordIdx = -1;
+      for (let i = 0; i < state.passwords.length; i++)
+        if (state.passwords[i].id === payload.id) passwordIdx = i;
+
+      state.passwords[passwordIdx] = payload;
+    });
+    builder.addCase(updatePassword.rejected, (state, { payload }) => {
       state.error = payload ?? null;
     });
   },

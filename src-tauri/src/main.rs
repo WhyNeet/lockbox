@@ -20,6 +20,7 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             create_password,
             create_vault,
+            update_password,
             get_all_passwords,
             delete_passwords,
             unlock_vault,
@@ -66,6 +67,18 @@ async fn create_password(
 ) -> Result<serde_json::Value, String> {
     let password = storage
         .create_password(password, metadata)
+        .map_err(|err| err.to_string())?;
+
+    Ok(password)
+}
+
+#[tauri::command]
+async fn update_password(
+    storage: tauri::State<'_, Storage>,
+    password: String,
+) -> Result<serde_json::Value, String> {
+    let password = storage
+        .update_password(password)
         .map_err(|err| err.to_string())?;
 
     Ok(password)

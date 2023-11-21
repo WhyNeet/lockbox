@@ -1,4 +1,5 @@
 use rusqlite::Row;
+use serde::Deserialize;
 use serde_json::json;
 use uuid::Uuid;
 
@@ -32,6 +33,19 @@ impl Password {
             self.metadata.get_hash()?,
         ))
     }
+
+    pub fn update_metadata(&mut self, metadata: Metadata, key: &[u8]) -> anyhow::Result<()> {
+        self.metadata = metadata.into_encrypted_entry(key)?;
+
+        Ok(())
+    }
+}
+
+#[derive(Deserialize)]
+pub struct PasswordJsonEntry {
+    id: Uuid,
+    password: String,
+    metadata: Metadata,
 }
 
 impl Password {
@@ -39,6 +53,16 @@ impl Password {
         Ok(
             json!({ "id": self.id, "password": String::from_utf8_lossy(&DecryptedEntry::from(&self.password, key)?).to_string(), "metadata": String::from_utf8_lossy(&DecryptedEntry::from(&self.metadata, key)?).to_string() }),
         )
+    }
+
+    pub fn from_json(password: String, key: &[u8]) -> anyhow::Result<Self> {
+        let password: PasswordJsonEntry = serde_json::from_str(&password)?;
+        let id = password.id;
+        let mut password = Password::new(password.password.as_bytes(), password.metadata, key)?;
+
+        password.id = id;
+
+        Ok(password)
     }
 }
 

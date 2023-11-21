@@ -47,6 +47,17 @@ impl PasswordStorage {
         Ok(password)
     }
 
+    pub fn update_password(&self, password: Password) -> anyhow::Result<Password> {
+        let conn = self.0.lock().unwrap();
+
+        conn.execute(
+            r#"UPDATE passwords SET password = $2, metadata = $3 WHERE id = $1"#,
+            password.clone().into_params()?,
+        )?;
+
+        Ok(password)
+    }
+
     pub fn get_all_passwords(&self, key: &[u8]) -> anyhow::Result<Vec<Value>> {
         let conn = self.0.lock().unwrap();
 

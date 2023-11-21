@@ -2,7 +2,11 @@ use std::{path::PathBuf, sync::Mutex};
 
 use serde_json::Value;
 
-use crate::storage::{master::Master, model::metadata::Metadata, passwords::PasswordStorage};
+use crate::storage::{
+    master::Master,
+    model::{metadata::Metadata, password::Password},
+    passwords::PasswordStorage,
+};
 
 pub struct Storage {
     master: Mutex<Option<Master>>,
@@ -40,6 +44,25 @@ impl Storage {
                 .create_password(password, metadata, key.as_ref().unwrap())?;
 
         password.decrypt(key.as_ref().unwrap())
+    }
+
+    pub fn update_password(&self, password: String) -> anyhow::Result<serde_json::Value> {
+        let key = self
+            .master
+            .lock()
+            .map_err(|err| anyhow::anyhow!(err.to_string()))?;
+
+        if key.is_none() {
+            anyhow::bail!("Vault is not prepared")
+        }
+
+        let key = key.as_ref().unwrap();
+
+        let password = Password::from_json(password, key)?;
+
+        let password = self.password_storage.update_password(password)?;
+
+        password.decrypt(key)
     }
 
     pub fn get_all_passwords(&self) -> anyhow::Result<Vec<Value>> {

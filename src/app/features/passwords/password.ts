@@ -63,3 +63,24 @@ export const createPassword = createAsyncThunk<
     return rejectWithValue(e.message);
   }
 });
+
+export const updatePassword = createAsyncThunk<
+  Password,
+  Password,
+  { rejectValue: string }
+>("passwords/updatePassword", async (newPassword, { rejectWithValue }) => {
+  try {
+    const passwordRes: Password = await invoke("update_password", {
+      password: JSON.stringify(newPassword),
+    });
+    const password: Password = {
+      ...passwordRes,
+      metadata: JSON.parse(passwordRes.metadata as unknown as string),
+    };
+
+    return password;
+  } catch (e: any) {
+    console.log(e);
+    return rejectWithValue(e.message);
+  }
+});
